@@ -15,19 +15,24 @@ from googleapiclient.discovery import build
 from datetime import datetime, date, timedelta
 from pathlib import Path
 import os
+import json
 
 app = Flask(__name__)
 
-CREDENTIALS_FILE = Path(__file__).parent.parent / "pt-automation" / "credentials.json"
-# ID tvojega Google Calendarja — dobimo ga v naslednjem koraku
-CALENDAR_ID = "matic.poredos@gmail.com"
-
-TRAJANJE_MIN = 40  # minutr na stranko
-
-SCOPES = ["https://www.googleapis.com/auth/calendar"]
+CALENDAR_ID  = "matic.poredos@gmail.com"
+TRAJANJE_MIN = 40
+SCOPES       = ["https://www.googleapis.com/auth/calendar"]
 
 def calendar_service():
-    creds = Credentials.from_service_account_file(CREDENTIALS_FILE, scopes=SCOPES)
+    # Na Render: bere iz env variable GOOGLE_CREDENTIALS
+    # Lokalno: bere iz credentials.json datoteke
+    creds_json = os.environ.get("GOOGLE_CREDENTIALS")
+    if creds_json:
+        info = json.loads(creds_json)
+        creds = Credentials.from_service_account_info(info, scopes=SCOPES)
+    else:
+        creds_file = Path(__file__).parent.parent / "pt-automation" / "credentials.json"
+        creds = Credentials.from_service_account_file(str(creds_file), scopes=SCOPES)
     return build("calendar", "v3", credentials=creds)
 
 def zasedeni_termini(datum_str):
