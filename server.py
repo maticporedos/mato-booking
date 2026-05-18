@@ -24,11 +24,12 @@ TRAJANJE_MIN = 40
 SCOPES       = ["https://www.googleapis.com/auth/calendar"]
 
 def calendar_service():
-    # Na Render: bere iz env variable GOOGLE_CREDENTIALS
-    # Lokalno: bere iz credentials.json datoteke
     creds_json = os.environ.get("GOOGLE_CREDENTIALS")
     if creds_json:
+        # Popravi \n v private_key če so bili double-escaped
         info = json.loads(creds_json)
+        if "private_key" in info:
+            info["private_key"] = info["private_key"].replace("\\n", "\n")
         creds = Credentials.from_service_account_info(info, scopes=SCOPES)
     else:
         creds_file = Path(__file__).parent.parent / "pt-automation" / "credentials.json"
@@ -124,8 +125,8 @@ def rezerviraj():
         return jsonify({"ok": True})
 
     except Exception as e:
-        print(f"❌ Napaka: {e}")
-        return jsonify({"error": "Napaka pri rezervaciji. Poskusi znova."}), 500
+        print(f"❌ Napaka: {type(e).__name__}: {e}")
+        return jsonify({"error": f"Napaka: {type(e).__name__}: {str(e)}"}), 500
 
 if __name__ == "__main__":
     print("🚀 Booking strežnik teče na http://localhost:5000")
