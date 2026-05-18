@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mato — Rezervacija termina</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #0a0a0a;
+      color: #f0f0f0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .card {
+      background: #141414;
+      border: 1px solid #2a2a2a;
+      border-radius: 16px;
+      padding: 40px 36px;
+      max-width: 480px;
+      width: 100%;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 36px;
+    }
+
+    .header h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+
+    .header h1 span {
+      color: #c9a84c;
+    }
+
+    .header p {
+      color: #888;
+      margin-top: 6px;
+      font-size: 0.95rem;
+    }
+
+    label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #888;
+      margin-bottom: 8px;
+      margin-top: 20px;
+    }
+
+    input, select {
+      width: 100%;
+      background: #1e1e1e;
+      border: 1px solid #2a2a2a;
+      border-radius: 10px;
+      color: #f0f0f0;
+      font-size: 1rem;
+      padding: 12px 14px;
+      outline: none;
+      transition: border-color 0.2s;
+      appearance: none;
+    }
+
+    input:focus, select:focus {
+      border-color: #c9a84c;
+    }
+
+    input::placeholder { color: #444; }
+
+    .services {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 0;
+    }
+
+    .service-btn {
+      background: #1e1e1e;
+      border: 1px solid #2a2a2a;
+      border-radius: 10px;
+      color: #f0f0f0;
+      padding: 14px 10px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 0.95rem;
+    }
+
+    .service-btn:hover { border-color: #c9a84c44; }
+    .service-btn.selected {
+      border-color: #c9a84c;
+      background: #c9a84c18;
+      color: #c9a84c;
+      font-weight: 600;
+    }
+
+    .service-btn .icon { font-size: 1.4rem; display: block; margin-bottom: 4px; }
+    .service-btn .duration { font-size: 0.75rem; color: #666; margin-top: 2px; }
+    .service-btn.selected .duration { color: #c9a84c99; }
+
+    .time-slots {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .slot {
+      background: #1e1e1e;
+      border: 1px solid #2a2a2a;
+      border-radius: 8px;
+      padding: 10px 6px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+    }
+
+    .slot:hover { border-color: #c9a84c44; }
+    .slot.selected { border-color: #c9a84c; background: #c9a84c18; color: #c9a84c; font-weight: 600; }
+    .slot.taken { background: #0a0a0a; color: #333; border-color: #1a1a1a; cursor: not-allowed; text-decoration: line-through; }
+
+    .btn {
+      display: block;
+      width: 100%;
+      background: #c9a84c;
+      color: #0a0a0a;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 700;
+      padding: 15px;
+      margin-top: 28px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      letter-spacing: 0.02em;
+    }
+
+    .btn:hover { background: #d4b35a; }
+    .btn:active { transform: scale(0.98); }
+    .btn:disabled { background: #333; color: #666; cursor: not-allowed; }
+
+    .success {
+      display: none;
+      text-align: center;
+      padding: 20px 0;
+    }
+
+    .success .check { font-size: 3rem; margin-bottom: 12px; }
+    .success h2 { font-size: 1.3rem; margin-bottom: 8px; }
+    .success p { color: #888; font-size: 0.95rem; line-height: 1.5; }
+
+    #loading { display: none; text-align: center; color: #888; margin-top: 12px; font-size: 0.9rem; }
+
+    .error-msg { color: #e05; font-size: 0.85rem; margin-top: 8px; display: none; }
+
+    .divider { border: none; border-top: 1px solid #1e1e1e; margin: 28px 0 8px; }
+  </style>
+</head>
+<body>
+<div class="card">
+  <div id="form-view">
+    <div class="header">
+      <h1>Mato <span>✂</span></h1>
+      <p>Rezerviraj termin za striženje</p>
+    </div>
+
+    <!-- Storitev -->
+    <div style="display:flex;align-items:center;gap:10px;background:#1e1e1e;border:1px solid #2a2a2a;border-radius:10px;padding:13px 14px;margin-top:4px;">
+      <span style="font-size:1.3rem;">✂️</span>
+      <span style="font-weight:600;">Moško striženje</span>
+      <span style="color:#666;font-size:0.85rem;margin-left:auto;">40 min</span>
+    </div>
+
+    <!-- Datum -->
+    <label>Datum</label>
+    <input type="date" id="date" onchange="loadSlots()" />
+
+    <!-- Čas -->
+    <label>Čas</label>
+    <div class="time-slots" id="slots">
+      <div style="color:#444; font-size:0.85rem; grid-column:span 3; padding: 10px 0;">
+        Najprej izberi datum ↑
+      </div>
+    </div>
+    <div class="error-msg" id="date-error">Ta dan ni na voljo (samo srede od 11:20 in vikendi).</div>
+
+    <hr class="divider" />
+
+    <!-- Osebni podatki -->
+    <label>Ime</label>
+    <input type="text" id="ime" placeholder="Janez" />
+
+    <label>Priimek</label>
+    <input type="text" id="priimek" placeholder="Novak" />
+
+    <label>Telefonska številka</label>
+    <input type="tel" id="telefon" placeholder="+386 40 123 456" />
+
+    <button class="btn" onclick="rezerviraj()">Rezerviraj termin →</button>
+    <div id="loading">Rezerviram...</div>
+  </div>
+
+  <div class="success" id="success-view">
+    <div class="check">✅</div>
+    <h2>Termin rezerviran!</h2>
+    <p id="success-text"></p>
+  </div>
+</div>
+
+<script>
+  let selectedService = 'Moško striženje';
+  let selectedSlot = null;
+  const SLOT_DURATION = 40; // minut
+
+  // Nastavi minimalni datum na danes
+  const dateInput = document.getElementById('date');
+  const today = new Date();
+  dateInput.min = today.toISOString().split('T')[0];
+
+  function selectService(el) {
+    document.querySelectorAll('.service-btn').forEach(b => b.classList.remove('selected'));
+    el.classList.add('selected');
+    selectedService = el.dataset.service;
+  }
+
+  function isAvailableDay(date) {
+    const day = date.getDay(); // 0=ned, 3=sre, 6=sob
+    return day === 3 || day === 0 || day === 6;
+  }
+
+  function generateSlots(date) {
+    const day = date.getDay();
+    let startH = 8, startM = 0;
+    if (day === 3) { startH = 11; startM = 20; } // sreda od 11:20
+
+    const endH = 22, endM = 0;
+    const slots = [];
+    let h = startH, m = startM;
+
+    while (h * 60 + m + SLOT_DURATION <= endH * 60 + endM) {
+      slots.push(`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`);
+      m += SLOT_DURATION;
+      if (m >= 60) { h += Math.floor(m/60); m = m % 60; }
+    }
+    return slots;
+  }
+
+  async function loadSlots() {
+    const dateStr = dateInput.value;
+    if (!dateStr) return;
+
+    const date = new Date(dateStr + 'T12:00:00');
+    const errEl = document.getElementById('date-error');
+    const slotsEl = document.getElementById('slots');
+    selectedSlot = null;
+
+    if (!isAvailableDay(date)) {
+      errEl.style.display = 'block';
+      slotsEl.innerHTML = '';
+      return;
+    }
+
+    errEl.style.display = 'none';
+    slotsEl.innerHTML = '<div style="color:#444;font-size:0.85rem;grid-column:span 3;padding:8px 0">Nalagam termine...</div>';
+
+    // Pridobi zasedene termine s strežnika
+    let taken = [];
+    try {
+      const res = await fetch(`/api/taken?date=${dateStr}`);
+      if (res.ok) taken = await res.json();
+    } catch(e) { /* strežnik ni vzpostavljen — prikaži vse termine */ }
+
+    const slots = generateSlots(date);
+    slotsEl.innerHTML = slots.map(t => {
+      const isTaken = taken.includes(t);
+      return `<div class="slot${isTaken ? ' taken' : ''}" onclick="${isTaken ? '' : `selectSlot(this,'${t}')`}">${t}</div>`;
+    }).join('');
+  }
+
+  function selectSlot(el, time) {
+    document.querySelectorAll('.slot').forEach(s => s.classList.remove('selected'));
+    el.classList.add('selected');
+    selectedSlot = time;
+  }
+
+  async function rezerviraj() {
+    const ime = document.getElementById('ime').value.trim();
+    const priimek = document.getElementById('priimek').value.trim();
+    const telefon = document.getElementById('telefon').value.trim();
+    const datum = dateInput.value;
+
+    if (!ime || !priimek || !telefon || !datum || !selectedSlot) {
+      alert('Prosim izpolni vsa polja in izberi termin.');
+      return;
+    }
+
+    const btn = document.querySelector('.btn');
+    const loading = document.getElementById('loading');
+    btn.disabled = true;
+    loading.style.display = 'block';
+
+    try {
+      const res = await fetch('/api/rezerviraj', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ime, priimek, telefon, datum, cas: selectedSlot, storitev: selectedService })
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        document.getElementById('form-view').style.display = 'none';
+        const sv = document.getElementById('success-view');
+        sv.style.display = 'block';
+        document.getElementById('success-text').innerHTML =
+          `<strong>${ime} ${priimek}</strong><br>${storitev(selectedService)} — ${datum}, ob ${selectedSlot}<br><br>Mato te bo kontaktiral za potrditev lokacije.`;
+      } else {
+        alert(data.error || 'Napaka pri rezervaciji. Poskusi znova.');
+        btn.disabled = false;
+        loading.style.display = 'none';
+      }
+    } catch(e) {
+      alert('Napaka — strežnik ni dosegljiv.');
+      btn.disabled = false;
+      loading.style.display = 'none';
+    }
+  }
+
+  function storitev(s) { return s === 'Brivstvo' ? '🪒 Brivstvo' : '✂️ Moško striženje'; }
+</script>
+</body>
+</html>
