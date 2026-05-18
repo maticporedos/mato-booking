@@ -63,6 +63,15 @@ def zasedeni_termini(datum_str):
         print(f"Napaka pri branju terminov: {e}")
         return []
 
+@app.route("/debug")
+def debug():
+    creds_json = os.environ.get("GOOGLE_CREDENTIALS", "")
+    return jsonify({
+        "env_var_present": bool(creds_json),
+        "env_var_length": len(creds_json),
+        "first_10_chars": creds_json[:10] if creds_json else ""
+    })
+
 @app.route("/")
 def index():
     return send_from_directory(".", "index.html")
