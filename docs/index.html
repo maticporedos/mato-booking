@@ -1,160 +1,101 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="sl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Matic Poredoš</title>
-  <meta name="description" content="Osebni trening, moško striženje in masaže. Rezerviraj termin.">
-  <meta property="og:title" content="Matic Poredoš">
-  <meta property="og:description" content="Osebni trening, moško striženje in masaže. Rezerviraj termin.">
-  <meta name="theme-color" content="#0a1628">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg: #0a1628;
-      --card: #12213a;
-      --card-hover: #182a48;
-      --border: #22365a;
-      --text: #f5eee0;
-      --muted: #a7b3c6;
-      --accent: #eadfc6;
-      --accent-text: #0a1628;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      overflow-x: hidden;
-      font-family: 'Inter', system-ui, -apple-system, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-    }
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Matic Poredoš — striženje</title>
+<meta name="description" content="Moško striženje za študente — rezerviraj termin.">
+<meta property="og:title" content="Matic Poredoš — moško striženje">
+<meta property="og:description" content="Moško striženje za študente — rezerviraj termin.">
+<meta name="theme-color" content="#0B0B0B">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0B0B0B;
+    --card: #161616;
+    --card-hover: #1E1E1E;
+    --border: #262626;
+    --text: #FFFFFF;
+    --muted: #A3A3A3;
+    --red: #E10600;
+    --red-hover: #FF1F14;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+    line-height: 1.5;
+  }
+  a { color: inherit; text-decoration: none; }
 
-    /* Naslovna slika: docs/hero.jpg. Dokler je ni, se prikaže moder preliv.
-       Ostra slika se spodaj postopoma skrije, pod njo pa zamegljena kopija
-       iste slike sega nižje in se mehko prelije v ozadje. */
-    .hero {
-      position: relative;
-      height: 62vh;
-      min-height: 380px;
-      max-height: 580px;
-      background: radial-gradient(ellipse at 50% 30%, #1d3560 0%, var(--bg) 70%);
-    }
-    .hero::before {
-      content: '';
-      position: absolute;
-      inset: 0 0 -180px 0;
-      background: url('hero.jpg') center 25% / cover no-repeat;
-      filter: blur(28px) saturate(1.1);
-      transform: scale(1.12);
-      opacity: 0.75;
-      -webkit-mask-image: linear-gradient(to bottom, transparent 35%, #000 60%, #000 72%, transparent 100%);
-              mask-image: linear-gradient(to bottom, transparent 35%, #000 60%, #000 72%, transparent 100%);
-    }
-    .hero-img {
-      position: absolute;
-      inset: 0;
-      background: url('hero.jpg') center 25% / cover no-repeat;
-      -webkit-mask-image: linear-gradient(to bottom, #000 45%, rgba(0,0,0,0.6) 70%, transparent 96%);
-              mask-image: linear-gradient(to bottom, #000 45%, rgba(0,0,0,0.6) 70%, transparent 96%);
-    }
-    .hero::after {
-      content: '';
-      position: absolute;
-      inset: 0 0 -180px 0;
-      background: linear-gradient(to bottom,
-        rgba(10, 22, 40, 0) 35%,
-        rgba(10, 22, 40, 0.45) 60%,
-        rgba(10, 22, 40, 0.8) 80%,
-        var(--bg) 100%);
-      pointer-events: none;
-    }
-    .hero-text {
-      position: absolute;
-      left: 0; right: 0; bottom: 12px;
-      z-index: 2;
-      text-align: center;
-      padding: 0 16px;
-    }
-    h1 {
-      font-size: 2.3rem; font-weight: 800;
-      letter-spacing: -0.03em; line-height: 1.1;
-      text-shadow: 0 2px 16px rgba(0, 0, 0, 0.6);
-    }
-    .tagline {
-      color: var(--accent);
-      margin-top: 8px;
-      font-size: 0.8rem; font-weight: 600;
-      text-transform: uppercase; letter-spacing: 0.14em;
-    }
+  /* brez fotografije: velik napis na crnem z rdecim sijem zgoraj */
+  .hero {
+    position: relative; text-align: center; padding: 84px 16px 30px;
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(225, 6, 0, .22), transparent 70%);
+  }
+  .scissors { width: 46px; height: 46px; margin: 0 auto 18px; color: var(--red); }
+  h1 { font-family: 'Archivo Black', sans-serif; font-weight: 400; line-height: .95; letter-spacing: .01em; }
+  h1 .w1 { display: block; font-size: clamp(3rem, 15vw, 4.4rem); }
+  h1 .w2 { display: block; font-size: clamp(2.2rem, 11vw, 3.2rem); color: var(--red); }
+  .tagline { margin-top: 16px; color: var(--muted); font-size: .74rem; font-weight: 600; letter-spacing: .3em; text-transform: uppercase; }
 
-    main { position: relative; z-index: 2; max-width: 440px; margin: 0 auto; padding: 8px 16px 32px; }
+  main { max-width: 460px; margin: 0 auto; padding: 4px 16px 40px; }
 
-    .socials { display: flex; justify-content: center; gap: 12px; margin-top: 4px; }
-    .socials a {
-      width: 44px; height: 44px;
-      border-radius: 50%;
-      background: var(--card);
-      border: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: center;
-      color: var(--text);
-      transition: border-color .15s, color .15s;
-    }
-    .socials a:hover { border-color: var(--accent); color: var(--accent); }
-    .socials svg { width: 20px; height: 20px; fill: currentColor; }
+  .socials { display: flex; justify-content: center; gap: 12px; margin: 0 0 22px; }
+  .socials a {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--card); border: 1px solid var(--border);
+    display: grid; place-items: center; transition: border-color .15s, color .15s;
+  }
+  .socials a:hover { border-color: var(--red); color: var(--red); }
+  .socials svg { width: 20px; height: 20px; fill: currentColor; }
 
-    h2 {
-      font-size: 0.75rem; font-weight: 600;
-      text-transform: uppercase; letter-spacing: 0.12em;
-      color: var(--muted);
-      margin: 28px 0 12px 4px;
-    }
+  .cta {
+    display: flex; align-items: center; gap: 14px;
+    background: var(--red); border-radius: 14px; padding: 16px 18px;
+    box-shadow: 0 8px 28px rgba(225, 6, 0, .28); transition: background .15s, transform .15s;
+  }
+  .cta:hover { background: var(--red-hover); transform: translateY(-1px); }
+  .cta .icon { font-size: 1.4rem; }
+  .cta .label { flex: 1; }
+  .cta strong { display: block; font-size: 1.02rem; font-weight: 800; }
+  .cta span { display: block; font-size: .82rem; opacity: .9; margin-top: 2px; }
+  .cta .arrow { font-size: 1.3rem; font-weight: 700; }
 
-    .link {
-      display: flex; align-items: center; gap: 14px;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 16px 18px;
-      margin-bottom: 10px;
-      color: var(--text);
-      text-decoration: none;
-      transition: transform .15s, background .15s, border-color .15s;
-    }
-    .link:hover { background: var(--card-hover); border-color: #34507f; transform: translateY(-2px); }
-    .link .icon { font-size: 1.5rem; flex-shrink: 0; width: 32px; text-align: center; }
-    .link .label { flex: 1; }
-    .link strong { display: block; font-weight: 600; font-size: 1rem; }
-    .link span { display: block; color: var(--muted); font-size: 0.85rem; margin-top: 2px; }
-    .link .arrow { color: var(--muted); font-size: 1.2rem; }
+  .note { margin-top: 12px; text-align: center; color: var(--muted); font-size: .8rem; }
 
-    .link.primary {
-      background: var(--accent);
-      border-color: var(--accent);
-      color: var(--accent-text);
-      padding: 20px 18px;
-    }
-    .link.primary span, .link.primary .arrow { color: #3a4a66; }
-    .link.primary:hover { background: #f4ebd7; }
-    .badge {
-      display: inline-block;
-      background: var(--accent-text); color: var(--accent);
-      font-size: 0.7rem; font-weight: 600;
-      padding: 2px 8px; border-radius: 99px;
-      margin-left: 6px; vertical-align: middle;
-    }
+  h2 {
+    font-family: 'Archivo Black', 'Inter', sans-serif; font-weight: 400;
+    font-size: .8rem; letter-spacing: .18em; text-transform: uppercase;
+    color: var(--red); margin: 32px 0 12px;
+  }
+  .link {
+    display: flex; align-items: center; gap: 14px; margin-top: 10px;
+    background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 15px 16px;
+    transition: background .15s, border-color .15s;
+  }
+  .link:hover { background: var(--card-hover); border-color: #3a3a3a; }
+  .link .icon { font-size: 1.2rem; }
+  .link .label { flex: 1; }
+  .link strong { display: block; font-size: .95rem; }
+  .link span { display: block; color: var(--muted); font-size: .82rem; }
+  .pm { font-family: 'Archivo Black', sans-serif; font-weight: 400; letter-spacing: .02em; }
+  .pm i { font-style: normal; color: var(--red); }
 
-    footer { text-align: center; color: #5d6d88; font-size: 0.8rem; margin-top: 36px; }
-  </style>
+  footer { margin-top: 36px; text-align: center; color: #6B6B6B; font-size: .75rem; letter-spacing: .04em; }
+</style>
 </head>
 <body>
   <header class="hero">
-    <div class="hero-img"></div>
-    <div class="hero-text">
-      <h1>Matic Poredoš</h1>
-      <p class="tagline">Osebni trener · Striženje · Masaže</p>
-    </div>
+    <svg class="scissors" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg>
+    <h1><span class="w1">MATIC</span><span class="w2">POREDOŠ</span></h1>
+    <p class="tagline">Moško striženje · za študente</p>
   </header>
 
   <main>
@@ -170,32 +111,24 @@
       </a>
     </nav>
 
-    <h2>Osebni trening</h2>
-    <a class="link primary" href="https://cal.com/matic-poredos-tgfoum/posvet-za-osebno-trenerstvo">
-      <div class="icon">💪</div>
-      <div class="label">
-        <strong>Uvodni posvet <em class="badge">BREZPLAČNO</em></strong>
-        <span>45 min po telefonu · spoznava se in narediva plan</span>
-      </div>
-      <div class="arrow">→</div>
-    </a>
-
-    <h2>Striženje in masaže</h2>
-    <a class="link" href="https://cal.com/matic-poredos-tgfoum/mosko-strizenje">
+    <a class="cta" href="https://cal.com/matic-poredos-tgfoum/mosko-strizenje">
       <div class="icon">✂️</div>
-      <div class="label"><strong>Moško striženje</strong><span>40 min</span></div>
+      <div class="label"><strong>Rezerviraj termin</strong><span>Moško striženje · 40 min</span></div>
       <div class="arrow">→</div>
     </a>
-    <a class="link" href="https://cal.com/matic-poredos-tgfoum/klasicna-svedska-ali-sportna-masaza">
-      <div class="icon">💆</div>
-      <div class="label"><strong>Masaža</strong><span>Klasična, švedska ali športna</span></div>
-      <div class="arrow">→</div>
-    </a>
+    <p class="note">V koledarju vidiš samo proste termine.</p>
 
     <h2>Vprašanja?</h2>
     <a class="link" href="https://wa.me/38630348026">
       <div class="icon">💬</div>
       <div class="label"><strong>Piši mi na WhatsApp</strong><span>Odgovorim v najkrajšem možnem času</span></div>
+      <div class="arrow">→</div>
+    </a>
+
+    <h2>Treniraš?</h2>
+    <a class="link" href="https://maticporedos.github.io/pragmatic/">
+      <div class="icon">💪</div>
+      <div class="label"><strong class="pm">PRAG<i>MATIC</i> COACHING</strong><span>Online osebno trenerstvo</span></div>
       <div class="arrow">→</div>
     </a>
 
